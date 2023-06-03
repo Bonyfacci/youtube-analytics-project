@@ -10,9 +10,9 @@ class Channel:
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
-        self._channel_id = channel_id
+        self.__channel_id = channel_id
 
-        self.info = Channel.info(self._channel_id)
+        self.info = Channel.info(self.__channel_id)
 
         self.title = self.info['items'][0]['snippet']['title']
         self.channel_info = self.info['items'][0]['snippet']['description']
@@ -23,8 +23,8 @@ class Channel:
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        youtube = build('youtube', 'v3', developerKey=Channel.info(self._channel_id).api_key)
-        channel = youtube.channels().list(id=self._channel_id, part='snippet,statistics').execute()
+        youtube = build('youtube', 'v3', developerKey=Channel.info(self.__channel_id).api_key)
+        channel = youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         return print(json.dumps(channel, indent=2, ensure_ascii=False))
 
     @staticmethod
@@ -37,8 +37,12 @@ class Channel:
     def get_service(cls):
         return Channel.youtube
 
+    @property
+    def channel_id(self):
+        return self.__channel_id
+
     def to_json(self, data):
-        information = {'id канала': self._channel_id,
+        information = {'id канала': self.__channel_id,
                        'название канала': self.title,
                        'описание канала': self.channel_info,
                        'ссылка на канал': self.url,

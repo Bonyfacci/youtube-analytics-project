@@ -8,11 +8,16 @@ class Video(Channel):
         self.video_id = video_id
 
         self.info = self.info(self.video_id)
-
-        self.title = self.info['items'][0]['snippet']['title']
-        self.url = f"https://www.youtube.com/watch?v={self.video_id}"
-        self.view_count: int = self.info['items'][0]['statistics']['viewCount']
-        self.like_count: int = self.info['items'][0]['statistics']['likeCount']
+        try:
+            self.title = self.info['items'][0]['snippet']['title']
+            self.url = f"https://www.youtube.com/watch?v={self.video_id}"
+            self.view_count: int = self.info['items'][0]['statistics']['viewCount']
+            self.like_count: int = self.info['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
         return self.title

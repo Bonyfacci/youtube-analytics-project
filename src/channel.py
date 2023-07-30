@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 from googleapiclient.discovery import build
 import json
 import os
